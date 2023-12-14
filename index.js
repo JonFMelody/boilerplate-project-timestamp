@@ -19,35 +19,33 @@ app.get("/", function (req, res) {
 });
 
 // your first API endpoint...
+
+app.get("/api/:date", function (req, res) {
+  const urlDate = req.params.date;
+  if (urlDate.length > 10) {
+    const date = new Date(urlDate * 1);
+    const unixTimestamp = date.getTime();
+    if (date == "Invalid Date") {
+      res.json({ error: "Invalid Date" });
+    }
+    res.json({ unix: unixTimestamp, utc: date.toUTCString() });
+    console.log("3");
+  } else {
+    const date = new Date(urlDate);
+    const unixTimestamp = date.getTime();
+    if (date == "Invalid Date") {
+      res.json({ error: "Invalid Date" });
+    }
+    res.json({ unix: unixTimestamp, utc: date.toUTCString() });
+    console.log("4");
+  }
+});
 app.get("/api/", function (req, res) {
   const urlDate = req.params.date;
   const date = new Date();
   const unixTimestamp = date.getTime();
   res.json({ unix: unixTimestamp, utc: date.toUTCString() });
 });
-app.get("/api/:date", function (req, res) {
-  const urlDate = req.params.date;
-  if (!urlDate) {
-    const date = new Date();
-    const unixTimestamp = date.getTime();
-    res.json({ unix: unixTimestamp, utc: date.toUTCString() });
-    console.log("1");
-  } else if (Number.isNaN(urlDate) || urlDate.length < 10) {
-    res.json({ error: "Invalid Date" });
-    console.log("2");
-  } else if (urlDate.length > 10) {
-    const date = new Date(urlDate * 1);
-    const unixTimestamp = date.getTime();
-    res.json({ unix: unixTimestamp, utc: date.toUTCString() });
-    console.log("3");
-  } else {
-    const date = new Date(urlDate);
-    const unixTimestamp = date.getTime();
-    res.json({ unix: unixTimestamp, utc: date.toUTCString() });
-    console.log("4");
-  }
-});
-
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log("Your app is listening on port " + listener.address().port);
