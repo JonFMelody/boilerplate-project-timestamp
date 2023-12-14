@@ -26,12 +26,13 @@ app.get("/api/:date", function (req, res) {
     const unixTimestamp = date.getTime();
     res.json({ unix: unixTimestamp, utc: date.toUTCString() });
     console.log("1");
-  } else if (!Number.isNaN(urlDate)) {
+  } else if (Number.isNaN(urlDate) || urlDate.length < 10) {
     res.json({ error: "Invalid Date" });
     console.log("2");
   } else if (urlDate.length > 10) {
-    const date = new Date(urlDate * 1000);
-    res.json({ unix: Number(urlDate), utc: date.toUTCString() });
+    const date = new Date(urlDate * 1);
+    const unixTimestamp = date.getTime();
+    res.json({ unix: unixTimestamp, utc: date.toUTCString() });
     console.log("3");
   } else {
     const date = new Date(urlDate);
