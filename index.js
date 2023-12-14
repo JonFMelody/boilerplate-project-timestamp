@@ -20,16 +20,24 @@ app.get("/", function (req, res) {
 
 // your first API endpoint...
 app.get("/api/:date", function (req, res) {
-  console.log(req.params.date.length);
-
-  if (req.params.date.length > 10) {
-    const date = new Date(req.params.date * 1);
-
-    res.json({ unix: Number(req.params.date), utc: date.toUTCString() });
-  } else {
-    const date = new Date(req.params.date);
+  const urlDate = req.params.date;
+  if (!urlDate) {
+    const date = new Date();
     const unixTimestamp = date.getTime();
     res.json({ unix: unixTimestamp, utc: date.toUTCString() });
+    console.log("1");
+  } else if (!Number.isNaN(urlDate)) {
+    res.json({ error: "Invalid Date" });
+    console.log("2");
+  } else if (urlDate.length > 10) {
+    const date = new Date(urlDate * 1000);
+    res.json({ unix: Number(urlDate), utc: date.toUTCString() });
+    console.log("3");
+  } else {
+    const date = new Date(urlDate);
+    const unixTimestamp = date.getTime();
+    res.json({ unix: unixTimestamp, utc: date.toUTCString() });
+    console.log("4");
   }
 });
 
